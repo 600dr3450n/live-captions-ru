@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Model and build artefacts
+models/*
+!models/README.md
+dist/
+dist-installer/
+build/*
+*.spec
+*.log
+!build/LiveCaptionsRU.spec
+
+# Screenshots and local artefacts
+_artifacts/
+
+# Editors and OS
+.idea/
+.vscode/
+Thumbs.db
+desktop.ini

@@ -1,0 +1,6 @@
+PyInstaller>=6.6
+# tools/make_icons.py renders the .ico files through Pillow; without it a fresh
+# checkout cannot regenerate the icons.
+Pillow>=10.0
+pytest>=8.0
+ruff>=0.5

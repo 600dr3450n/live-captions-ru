@@ -1,0 +1,27 @@
+Live Captions RU
+Copyright 2026 600D R3450N (https://github.com/600dr3450n)
+
+This product includes software and models developed by third parties.
+See THIRD-PARTY-NOTICES.md for the full list and license texts.
+
+  * T-one acoustic model — Copyright T-Bank / T-Software DC,
+    licensed under the Apache License 2.0.
+    ONNX export by the sherpa-onnx project (k2-fsa) from the official weights;
+    the shipped file is that export with 379 FP16 tensors widened to FP32,
+    so the bundled file is modified.
+  * Roboto — Copyright Google LLC, licensed under the Apache License 2.0.
+  * PySide6 / Qt — Copyright The Qt Company, licensed under LGPL 3.0.
+  * ONNX Runtime — Copyright Microsoft Corporation, licensed under the MIT License.
+  * NumPy — Copyright the NumPy developers, licensed under the BSD 3-Clause License.
+  * SoundCard — Copyright the SoundCard developers, licensed under the BSD 3-Clause License.
+  * tqdm — Copyright the tqdm developers, licensed under MPL 2.0 and the MIT License.
+  * OpenSSL — Copyright The OpenSSL Project, licensed under the Apache License 2.0.
+  * libffi — Copyright Anthony Green, Red Hat and others, licensed under the MIT License.
+  * Python — Copyright the Python Software Foundation, licensed under the PSF License 2.0.
+  * Microsoft Visual C++ runtime — Copyright Microsoft Corporation, redistributed
+    unmodified under the Microsoft Visual Studio redistributable terms.
+  * PyInstaller — Copyright the PyInstaller developers, GPL 2.0 with a special
+    exception that allows distributing bundled applications.
+
+Live Captions RU is not affiliated with T-Bank, Google or The Qt Company.
+Product names are used only to describe the components and their origin.

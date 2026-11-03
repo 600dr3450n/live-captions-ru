@@ -1,0 +1,7 @@
+Roboto is Copyright 2011 Google LLC and is licensed under the Apache License 2.0.
+
+The font files bundled with this application (Roboto-Regular.ttf,
+Roboto-Medium.ttf, Roboto-Bold.ttf) are unmodified copies from the Google Fonts
+repository: https://github.com/google/fonts/tree/main/apache/roboto
+
+The full Apache License 2.0 text is in the repository root: LICENSE.
