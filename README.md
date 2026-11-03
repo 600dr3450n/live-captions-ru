@@ -1,5 +1,7 @@
 # Live Captions RU
 
+English | [Русский](docs/README.ru.md)
+
 Real-time Russian captions for Windows. Works fully offline: the audio never leaves
 the machine, and no internet connection is used at runtime.
 
@@ -34,7 +36,8 @@ support queue where the voice comes through a headset all day.
 ## Download
 
 Take the archive from [Releases](../../releases), unpack it anywhere and run
-`LiveCaptionsRU.exe`. The model is included, so the first run needs no downloads.
+`LiveCaptionsRU.exe`. The speech model ships inside the archive, so the app never
+downloads anything at runtime.
 
 The executable is not code-signed, so Windows SmartScreen may warn on first launch:
 choose **More info → Run anyway**.
