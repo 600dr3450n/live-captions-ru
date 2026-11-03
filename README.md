@@ -70,9 +70,27 @@ Two packages are published in [Releases](../../releases):
 The speech model ships inside both packages, so the app never downloads anything at
 runtime.
 
-The executable is not code-signed, so Windows SmartScreen may warn on first launch:
-choose **More info**, then **Run anyway**. Some antivirus products also flag unsigned
-PyInstaller bundles; the checksums below are the way to confirm the file is intact.
+### Windows warnings about unsigned binaries
+
+The executables are not code-signed, and Windows reacts to that in two different ways.
+
+**SmartScreen** shows "Windows protected your PC" the first time you start the installer
+or the portable build. Choose **More info**, then **Run anyway**. You can also clear the
+mark-of-the-web before starting the app:
+
+```powershell
+Unblock-File .\LiveCaptionsRU-1.0.0-setup.exe
+```
+
+**Smart App Control** on Windows 11 is stricter: it blocks unknown and unsigned code by
+default and offers no "Run anyway" button, so on such a machine the app does not start at
+all. Check **Windows Security -> App & browser control -> Smart App Control**. Switching it
+off affects every app on the machine, not just this one, so that decision stays with the
+owner of the machine.
+
+Some antivirus products also flag unsigned PyInstaller bundles as a packer heuristic.
+There is no way around a heuristic other than signing, so the checksum described below is
+the check that matters.
 
 ### Verifying the download
 
@@ -172,11 +190,12 @@ iscc installer\LiveCaptionsRU.iss     # dist-installer\LiveCaptionsRU-<version>-
 `tools/build.py --onefile` produces a single executable instead; it starts slower
 because the bundle is unpacked into a temporary folder on every launch.
 
-The model is not stored in the repository (GitHub rejects files above 100 MB). Put the
-fp32 export described in [`models/README.md`](models/README.md) into `models/t-one`
-before building, then confirm it with `tools/verify_model.py`. The upstream quantized
-file is smaller and useful for tests, but it is a different file and does not produce
-byte-identical output.
+The model is not stored in the repository: GitHub blocks files above 100 MiB in a regular
+git push, while release assets allow up to 2 GiB each, so the model ships inside the release
+archives only. To build from source, put the fp32 export described in
+[`models/README.md`](models/README.md) into `models/t-one` and confirm it with
+`tools/verify_model.py`. The upstream quantized file is smaller and useful for tests, but it
+is a different file and does not produce byte-identical output.
 
 `tools/make_icons.py` is not needed for a normal build: `app/icon.ico` and
 `app/icon_off.ico` are already in the repository. Run it only to re-render them after a
