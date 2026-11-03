@@ -1,6 +1,6 @@
 # Build and test tooling, pinned to the versions the 1.0.0 build was made with.
 PyInstaller==6.22.3
-pytest==9.1.1
+pytest==9.2.0
 
 # tools/make_icons.py renders the .ico files through Pillow; without it a fresh
 # checkout cannot regenerate the icons.
