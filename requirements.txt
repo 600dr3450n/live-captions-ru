@@ -2,6 +2,6 @@
 # The release archives and the numbers in README.md were measured with exactly these,
 # so a bump is a deliberate change that has to be re-measured.
 PySide6==6.12.0
-onnxruntime==1.31.0
+onnxruntime==1.31.1
 numpy==2.5.4
 soundcard==0.4.6
