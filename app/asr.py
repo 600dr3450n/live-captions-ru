@@ -1,7 +1,9 @@
 """Streaming Russian recognition with T-one and a custom CTC decoder."""
 from __future__ import annotations
 
+import hashlib
 import logging
+import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -12,6 +14,45 @@ import onnxruntime as ort
 log = logging.getLogger(__name__)
 
 SAMPLE_RATE = 8000
+
+# SHA-256 of the model files the release ships. The model folder next to the exe takes
+# priority over the bundled copy, so a replaced file would otherwise change the decoded
+# text without a trace. A mismatch is logged and the app keeps running: the user is
+# allowed to drop a different export in, they just have to be able to see that they did.
+MODEL_SHA256 = "4a3827b04ef683fe0cffbb47161dd146aa19f8db503902e0ba2de5529d82249e"
+TOKENS_SHA256 = "27f7b3ba2096c572375fba1a6b29af1f80d86e08a329940612908112695f97e0"
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def verify_model_files(model_dir: Path) -> bool:
+    """Compare the model files with the shipped checksums and log the result.
+
+    Runs off the main thread: hashing 274 MB costs about a second and the pipeline has
+    to start without waiting for it. Returns True when both files match.
+    """
+    ok = True
+    for name, expected in (("model.onnx", MODEL_SHA256), ("tokens.txt", TOKENS_SHA256)):
+        path = model_dir / name
+        try:
+            actual = _sha256(path)
+        except OSError as exc:
+            log.error("model_verify_failed file=%s error=%r", name, exc)
+            ok = False
+            continue
+        if actual != expected:
+            log.warning("model_verify_mismatch file=%s expected=%s actual=%s", name, expected, actual)
+            ok = False
+    if ok:
+        log.info("model_verify_ok dir=%s", model_dir)
+    return ok
+
 SAMPLES_PER_CHUNK = 2400
 FRAMES_PER_CHUNK = 10
 STATE_SIZE = 219729
@@ -177,6 +218,9 @@ class TOneStreamingASR:
         self._session = ort.InferenceSession(
             str(model_dir / "model.onnx"), sess_options=options, providers=["CPUExecutionProvider"]
         )
+        threading.Thread(
+            target=verify_model_files, args=(model_dir,), name="model-verify", daemon=True
+        ).start()
         log.info(
             "model_loaded model=t-one-own-decoder threads=%d load_time_s=%.2f",
             num_threads,

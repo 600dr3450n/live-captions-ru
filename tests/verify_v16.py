@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Проверка: текст живёт сплошным потоком, а затемнение идёт по таймеру.
+"""Check: the text lives as a continuous stream, while dimming runs on a timer.
 
-Фраз больше нет. Пауза в речи не закрывает и не переносит текст, поэтому вид не
-прыгает. Слово становится «прошлым» не потому, что оказалось на верхней строке, а
-потому что с момента его распознавания прошло больше секунд, заданных в настройках
-(«Держать слово ярким»). Тест проверяет обе стороны: окно подсветки сужается со
-временем, а пауза границы не создаёт.
+There are no phrases anymore. A pause in speech neither closes nor wraps the text, so the view
+does not jump. A word becomes "past" not because it ended up on the top line, but because more
+seconds than the ones set in the settings ("Keep word bright") passed since it was recognized.
+The test checks both sides: the highlight window narrows over time, and a pause creates no
+boundary.
 """
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ class Chunk:
 
 
 class FakeRecognizer:
-    """Отдаёт заранее заданные варианты текста, по одному на вызов feed."""
+    """Returns predefined text variants, one per feed call."""
 
     def __init__(self, texts: list[str], pause_every: int = 2) -> None:
         self._texts = list(texts)
@@ -60,7 +60,7 @@ class FakeRecognizer:
         index = min(self._calls, len(self._texts) - 1)
         self._calls += 1
         stream.text = self._texts[index]
-        # Модель охотно сообщает о паузе: если бы вид зависел от неё, это всплыло бы.
+        # The model readily reports a pause: if the view depended on it, this would surface.
         if self._pause_every and self._calls % self._pause_every == 0:
             stream.phrase_ended = True
             stream.phrase_frames = 30
@@ -78,7 +78,7 @@ class FakeRecognizer:
 
 
 def run(texts: list[str], gap: float, room: int = 6) -> list[tuple[str, int, int, int]]:
-    """Прогон с паузами между чанками: собираем всё, что ушло в UI."""
+    """Run with pauses between chunks: collect everything that reached the UI."""
     seen: list[tuple[str, int, int, int]] = []
     audio: queue.Queue = queue.Queue()
 
@@ -118,7 +118,7 @@ worker = RecognitionWorker(
 worker.start()
 try:
     audio.put(Chunk())
-    time.sleep(0.6)  # последнее слово успевает осесть (WORD_SETTLE_SECONDS)
+    time.sleep(0.6)  # the last word settles in time (WORD_SETTLE_SECONDS)
     first = worker._highlight_range("один два три четыре")  # noqa: SLF001
     time.sleep(WINDOW + 0.2)
     second = worker._highlight_range("один два три четыре")  # noqa: SLF001

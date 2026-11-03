@@ -1,4 +1,4 @@
-"""Проверка версии 6: подсветка целых слов, правило секунды, плавная прокрутка, новые элементы настроек."""
+"""Version 6 verification: whole-word highlight, one-second rule, smooth scrolling, new settings widgets."""
 from __future__ import annotations
 
 import ctypes
@@ -70,7 +70,7 @@ def check_highlight_render(app) -> bool:
     settings.geometry.max_lines = 2
     overlay = SubtitleOverlay(settings, exclude_from_capture=False)
     text = "добрый день меня зовут анна"
-    overlay.set_text(text, len(text.split()), 3, 5)  # подсвечены «зовут анна»
+    overlay.set_text(text, len(text.split()), 3, 5)  # "зовут анна" is highlighted
     for _ in range(20):
         app.processEvents()
         time.sleep(0.02)
@@ -92,7 +92,7 @@ def check_highlight_render(app) -> bool:
 
 
 def check_no_animation(app) -> bool:
-    """Анимаций нет; слова не двигаются; подсветкой управляет рабочий поток, окно само не гасит."""
+    """No animations; words do not move; highlighting is driven by the worker thread, the window does not fade on its own."""
     settings = settings_module.Settings()
     settings.geometry.width_px = 900
     settings.geometry.max_lines = 3
@@ -144,7 +144,7 @@ def check_dialog_controls(app) -> bool:
     checkboxes = [box.text() for box in dialog.findChildren(QCheckBox)]
     print("\n=== Элементы настроек ===")
     print(f"  Ряды цветов: {len(colors)} (ожидалось 3), ползунки со кнопками −/+: {len(steppers)}")
-    minus_buttons = len(steppers)  # у спинбоксов стрелки встроенные
+    minus_buttons = len(steppers)  # spin boxes have built-in arrows
     scroll_box = any("Плавная прокрутка" in text for text in checkboxes)
     print(f"  Кнопки −/+ у ползунков: {minus_buttons} из {len(steppers)}")
     print(f"  Галочка плавной прокрутки: {'ок' if not scroll_box else 'ОШИБКА (лишняя галочка)'}")

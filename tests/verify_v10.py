@@ -1,7 +1,7 @@
-"""Проверка версии 2: свой декодер вместо sherpa-onnx.
+"""Version 2 check: own decoder instead of sherpa-onnx.
 
-Сверяем текст с эталоном sherpa-onnx, проверяем конец реплики, память, скорость
-и сквозной путь через рабочий поток.
+We compare text against the sherpa-onnx reference, check end of utterance, memory, speed
+and the end-to-end path through the worker thread.
 """
 from __future__ import annotations
 
@@ -73,7 +73,7 @@ def read_wav(path: Path) -> np.ndarray:
 
 
 def check_text_matches_reference() -> bool:
-    """Текст нашего декодера должен совпадать с sherpa-onnx на общем участке."""
+    """Our decoder text must match sherpa-onnx over their common span."""
     print("=== Текст против sherpa-onnx ===")
     results = []
     for name in ("shortstories_01_clean", "shortstories_02_phone", "shortstories_04_noisy"):
@@ -105,7 +105,7 @@ def check_text_matches_reference() -> bool:
         mine = engine.finish(stream).strip()
 
         ratio = difflib.SequenceMatcher(None, mine, ref).ratio()
-        # наш текст может быть длиннее на хвост (< 300 мс), который sherpa отбрасывает
+        # our text may be longer by the tail (< 300 ms) that sherpa drops
         prefix = mine.startswith(ref) or ref.startswith(mine)
         print(f"  {name}: моё {len(mine)} симв., эталон {len(ref)}, совпадение {ratio * 100:.2f} %, префикс {prefix}")
         results.append(ratio > 0.99 and prefix)
@@ -113,7 +113,7 @@ def check_text_matches_reference() -> bool:
 
 
 def check_endpoint_rules() -> bool:
-    """Конец реплики: тишина после речи, тишина с начала, непрерывная речь без конца."""
+    """End of utterance: silence after speech, silence from the start, continuous speech with no end."""
     print("\n=== Конец реплики ===")
     engine = TOneStreamingASR(MODEL_DIR, num_threads=1)
     step = int(SAMPLE_RATE * 0.02)
@@ -124,7 +124,7 @@ def check_endpoint_rules() -> bool:
             chunk = (np.random.default_rng(1).normal(0, amplitude, min(step, total - start))).astype(np.float32)
             engine.feed(stream, chunk, SAMPLE_RATE)
 
-    # 1. речь 1 с, потом тишина — конец должен наступить после ENDPOINT_SILENCE
+    # 1. 1 s of speech, then silence — the end must arrive after ENDPOINT_SILENCE
     stream = engine.create_stream()
     feed(stream, 1.0, 0.05)
     silence = 0.0
@@ -138,7 +138,7 @@ def check_endpoint_rules() -> bool:
     ok1 = endpoint_after is not None and abs(endpoint_after - ENDPOINT_SILENCE) < 0.25
     print(f"  речь + тишина: конец через {endpoint_after} с после речи (ожидалось ≈{ENDPOINT_SILENCE}) — {'ок' if ok1 else 'ОШИБКА'}")
 
-    # 2. тишина без речи — конец по начальной тишине
+    # 2. silence without speech — the end comes from the initial silence
     stream = engine.create_stream()
     silence = 0.0
     endpoint_after = None
@@ -151,7 +151,7 @@ def check_endpoint_rules() -> bool:
     ok2 = endpoint_after is not None and abs(endpoint_after - ENDPOINT_INITIAL_SILENCE) < 0.25
     print(f"  только тишина: конец через {endpoint_after} с (ожидалось ≈{ENDPOINT_INITIAL_SILENCE}) — {'ок' if ok2 else 'ОШИБКА'}")
 
-    # 3. непрерывная речь 5 с — конца быть не должно
+    # 3. 5 s of continuous speech — there must be no end
     stream = engine.create_stream()
     fired = False
     for _ in range(100):
@@ -161,7 +161,7 @@ def check_endpoint_rules() -> bool:
     ok3 = not fired
     print(f"  непрерывная речь 5 с: конца нет — {'ок' if ok3 else 'ОШИБКА'}")
 
-    # 4. однократность: на тишине конец не должен повторяться каждый вызов
+    # 4. single-shot: on silence the end must not repeat on every call
     stream = engine.create_stream()
     feed(stream, 1.0, 0.05)
     feed(stream, 1.5, 0.0)
@@ -173,7 +173,7 @@ def check_endpoint_rules() -> bool:
 
 
 def check_memory_and_speed() -> bool:
-    """5 минут аудио: память не должна расти, скорость — с запасом."""
+    """5 minutes of audio: memory must not grow, speed must keep a wide margin."""
     print("\n=== Память и скорость (5 минут аудио) ===")
     audio = read_wav(SAMPLES / "shortstories_01_clean.wav")
     engine = TOneStreamingASR(MODEL_DIR, num_threads=2)
@@ -204,7 +204,7 @@ def check_memory_and_speed() -> bool:
 
 
 def check_worker_pipeline(app) -> bool:
-    """Сквозной путь: рабочий поток + настоящий декодер, реплика уходит в историю."""
+    """End-to-end path: worker thread + real decoder, the utterance moves to history."""
     print("\n=== Сквозной путь через рабочий поток ===")
     import queue
 
@@ -218,7 +218,7 @@ def check_worker_pipeline(app) -> bool:
         engine, audio_queue, lambda *args: events.append(args), lambda: False, highlight_seconds=lambda: 1.0
     )
     worker.start()
-    step = 960  # 20 мс при 48 кГц
+    step = 960  # 20 ms at 48 kHz
     audio48 = np.interp(
         np.arange(int(len(audio) * 6)) / 48000, np.arange(len(audio)) / SAMPLE_RATE, audio
     ).astype(np.float32)

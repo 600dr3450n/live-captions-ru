@@ -1,4 +1,4 @@
-"""Проверка защиты от двойного запуска (именованный мьютекс)."""
+"""Double-start guard check (named mutex)."""
 from __future__ import annotations
 
 import sys

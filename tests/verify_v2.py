@@ -1,4 +1,4 @@
-"""Проверка версии 2: настройки, исправление «простыни», окно настроек."""
+"""Version 2 verification: settings, subtitle box fix, settings dialog."""
 from __future__ import annotations
 
 import ctypes
@@ -64,7 +64,7 @@ def check_settings_roundtrip() -> bool:
         print(f"  {name}: {'ок' if ok else 'ОШИБКА'}")
     result = all(checks.values())
 
-    # восстановим прежний файл настроек
+    # restore the previous settings file
     if backup is not None:
         original_path.write_text(backup, encoding="utf-8")
     else:
@@ -79,7 +79,7 @@ def grab(screen, rect) -> np.ndarray:
 
 def check_overlay_box(app) -> bool:
     settings = settings_module.Settings()
-    settings.appearance.backdrop_enabled = True  # проверяем геометрию подложки
+    settings.appearance.backdrop_enabled = True  # check backdrop geometry
     settings.geometry.max_lines = 3
     settings.geometry.position = "bottom"
     settings.geometry.margin = 120
@@ -106,8 +106,8 @@ def check_overlay_box(app) -> bool:
     print(f"  Скриншот: {ART / 'v2_box_fixed.png'}")
 
     ok_lines = len(lines) <= settings.geometry.max_lines
-    # Ширина упирается в экран: в offscreen-режиме и на узких мониторах запрошенные
-    # 900 px физически не влезают, поэтому сверяем высоту и что ширина не превысила экран.
+    # Width is clamped to the screen: in offscreen mode and on narrow monitors the
+    # requested 900 px do not fit, so only the height and width-not-exceeding-screen are checked.
     ok_size = (
         geo.width() <= min(900, available.width())
         and geo.height() == 2 * settings.appearance.padding_y + 3 * line_height
@@ -121,7 +121,7 @@ def check_overlay_box(app) -> bool:
         screen_image.height(), screen_image.width(), 4
     ).copy()
 
-    # геометрия рисуемой подложки — по альфа-каналу собственной отрисовки окна
+    # geometry of the drawn backdrop is taken from the alpha channel of the window's own rendering
     from PySide6.QtGui import QImage
 
     own = overlay.grab().toImage().convertToFormat(QImage.Format.Format_RGBA8888)
@@ -168,7 +168,7 @@ def check_dialog(app) -> bool:
     print(f"  Размер окна: {dialog.width()}x{dialog.height()}, разделов: {tabs.count() if tabs else 0}")
     print(f"  Скриншот: {ART / 'v2_settings_dialog.png'}")
 
-    # проверим, что изменение настройки отдаёт сигнал живого применения
+    # verify that changing a setting emits the live-apply signal
     dialog.size_combo.setCurrentText("52")
     for _ in range(5):
         app.processEvents()
@@ -179,7 +179,7 @@ def check_dialog(app) -> bool:
 
 
 def check_edit_mode(app) -> bool:
-    """Режим правки: перетаскивание и растягивание рамки мышью."""
+    """Edit mode: dragging and resizing the frame with the mouse."""
     from PySide6.QtCore import QPointF
 
     class FakeMouseEvent:

@@ -1,4 +1,4 @@
-"""Проверка версии 3: режим правки, затемнение старых строк, предпросмотр, меню трея, настройки."""
+"""Version 3 verification: edit mode, dimming of previous lines, preview, tray menu, settings."""
 from __future__ import annotations
 
 import ctypes
@@ -110,7 +110,7 @@ def check_click_through(app) -> bool:
     for _ in range(20):
         app.processEvents()
         time.sleep(0.03)
-    # при пересоздании окна дескриптор меняется — берём актуальный
+    # the window handle changes when the window is recreated — take the current one
     edit_hwnd = int(overlay.winId())
     edit_center = window_under_point(center_x, center_y)
     edit_handle = window_under_point(geometry.x() + geometry.width() - 15, geometry.y() + geometry.height() - 15)
@@ -189,7 +189,7 @@ def check_tray_menu(app) -> bool:
     print("\n=== Меню в трее ===")
     print(f"  Пункты: {actions}")
     ok = first_ok and actions[1:] == expected_tail
-    # переключатель должен менять подпись и иконку
+    # the toggle must change both the label and the icon
     icon_before = captions.tray.icon().cacheKey()
     captions._toggle_captions()  # noqa: SLF001
     captions._update_status()  # noqa: SLF001

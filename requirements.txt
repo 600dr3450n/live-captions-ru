@@ -1,4 +1,7 @@
-PySide6>=6.7,<7
-onnxruntime>=1.18,<2
-numpy>=1.26,<3
-soundcard>=0.4.3
+# Runtime dependencies, pinned to the versions the 1.0.0 build was made with.
+# The release archives and the numbers in README.md were measured with exactly these,
+# so a bump is a deliberate change that has to be re-measured.
+PySide6==6.12.0
+onnxruntime==1.31.0
+numpy==2.5.4
+soundcard==0.4.6

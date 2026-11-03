@@ -5,7 +5,7 @@ Usage:
     python tools/build.py            # build into dist/LiveCaptionsRU
     python tools/build.py --onefile  # single-file build (slower start)
 
-The model must be in models/t-one (see tools/fetch_model.py).
+The model must be in models/t-one (see models/README.md).
 """
 from __future__ import annotations
 
@@ -121,7 +121,7 @@ def main() -> int:
 
     if not (MODEL / "model.onnx").exists():
         print(f"model not found: {MODEL / 'model.onnx'}", file=sys.stderr)
-        print("run: python tools/fetch_model.py", file=sys.stderr)
+        print("place the T-one model in models/t-one (see models/README.md)", file=sys.stderr)
         return 2
     if not ICON.exists():
         print(f"icon not found: {ICON}", file=sys.stderr)
@@ -213,7 +213,7 @@ def _strip_user_state(target: Path) -> int:
     """Keep the log and settings of the build machine out of the release package.
 
     A fresh install has neither file, so anything found here came from a test run on
-    this machine. The user opens the log through "Открыть журнал событий", and it
+    this machine. The user opens the log through the "Open event log" button, and it
     must not start with entries from someone else's session.
     """
     if not target.is_dir():

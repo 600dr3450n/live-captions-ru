@@ -1,10 +1,10 @@
-"""Правка 1.0.3: хвост последней фразы доигрывается при остановке, паузе и смене устройства.
+"""Fix 1.0.3: the tail of the last phrase is flushed on stop, pause, and device change.
 
-Проверяем на поддельном движке (быстро, без модели):
-- при stop флаш идёт и текст доходит до UI;
-- при паузе флаш идёт ровно один раз;
-- при смене частоты старый поток получает хвост до пересоздания;
-- без потока/частоты флаш молчит и не падает.
+We check on a fake engine (fast, no model):
+- on stop the flush runs and the text reaches the UI;
+- on pause the flush runs exactly once;
+- on sample-rate change the old stream gets the tail before recreation;
+- with no stream/rate the flush stays silent and does not crash.
 """
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ class FakeChunk:
 
 
 class FakeRecognizer:
-    """Считает флаши: каждый feed длиной больше чанка считаем хвостовым."""
+    """Counts flushes: each feed longer than a chunk counts as a tail flush."""
 
     def __init__(self) -> None:
         self.feeds: list[int] = []
@@ -56,7 +56,7 @@ class FakeRecognizer:
         size = len(samples)
         with self.lock:
             self.feeds.append(size)
-            # хвостовой флаш: 0.6 с нулей на 8 кГц = 4800 сэмплов
+            # tail flush: 0.6 s of zeros at 8 kHz = 4800 samples
             if size >= int(rate * config.TAIL_PAD_SECONDS):
                 self.flush_calls += 1
                 self.text = self.text + " хвост"

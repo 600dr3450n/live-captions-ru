@@ -1,4 +1,4 @@
-"""Скриншоты: окно цвета, режим правки рамки, предпросмотр без ЗАГЛАВНЫХ; проверка выравнивания."""
+"""Screenshots: color dialog, frame edit mode, preview without UPPERCASE; alignment check."""
 from __future__ import annotations
 
 import sys
@@ -25,7 +25,7 @@ def pump(delay: float = 0.15) -> None:
         time.sleep(0.01)
 
 
-# ---------------------------------------------------------------- окно цвета
+# ---------------------------------------------------------------- color dialog
 dialog = ColorDialog(sm.QColor("#56436D") if hasattr(sm, "QColor") else None) if False else None
 from PySide6.QtGui import QColor  # noqa: E402
 
@@ -36,7 +36,7 @@ dialog.grab().save(str(ART / "v11_color_dialog.png"))
 print("скриншот:", ART / "v11_color_dialog.png", dialog.width(), "x", dialog.height())
 dialog.close()
 
-# ------------------------------------------------------------------ рамка, правка
+# ------------------------------------------------------------------ frame, edit mode
 s = sm.Settings()
 s.geometry.width_px = 760
 s.geometry.max_lines = 3
@@ -50,14 +50,14 @@ overlay.grab().save(str(ART / "v11_edit_mode.png"))
 print("скриншот:", ART / "v11_edit_mode.png")
 overlay.end_edit_mode(save=False)
 
-# ------------------------------------------------ предпросмотр без ЗАГЛАВНЫХ
+# ------------------------------------------------ preview without UPPERCASE
 overlay.apply_settings(s)
 pump()
 overlay.grab().save(str(ART / "v11_preview_lower.png"))
 print("скриншот:", ART / "v11_preview_lower.png")
 overlay.deleteLater()
 
-# ------------------------------------------------------- выравнивание и хвост
+# ------------------------------------------------------- alignment and tail
 print("\n=== Выравнивание с недописанным словом ===")
 ok = True
 for align in ("left", "center", "right"):
@@ -69,7 +69,7 @@ for align in ("left", "center", "right"):
     s.appearance.backdrop_enabled = False
     overlay = SubtitleOverlay(s, exclude_from_capture=False)
     text = "ну сейчас к тебе приедет бригада давай я жду"
-    confirmed = 6  # «давай» ещё пишется
+    confirmed = 6  # the seventh word is still being typed
     overlay.set_text([], text, confirmed, 0, confirmed)
     pump(0.2)
     image = overlay.grab().toImage()

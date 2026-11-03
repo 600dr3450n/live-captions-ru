@@ -1,8 +1,8 @@
-"""Сплиттер фраз по логитам: синтетика и реальная модель.
+"""Phrase splitter on logits: synthetic data and the real model.
 
-Проверяем, что граница ставится по паузе от 0.6 с, что короткая пауза фразу не
-рвёт, что пауза, размазанная по стыку чанков, всё равно видна, и что на реальном
-аудио с паузой движок сообщает о конце фразы.
+We check that the boundary is set by a pause of at least 0.6 s, that a short pause does not
+tear a phrase, that a pause smeared across a chunk seam is still visible, and that on real
+audio with a pause the engine reports the end of a phrase.
 """
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ def check(condition: bool, label: str) -> None:
 
 
 def speech_frames(count: int) -> np.ndarray:
-    """Кадры речи: space+blank близки к нулю, значит вероятность речи высокая."""
+    """Speech frames: space+blank are near zero, so the speech probability is high."""
     frame = np.full(35, -0.04, dtype=np.float32)
     frame[33] = -8.0
     frame[34] = -8.0
@@ -96,8 +96,8 @@ for offset in range(0, padded.size, 2400):
 check(phrases_seen >= 1, f"на речи с паузой сплиттер дал границу ({phrases_seen})")
 
 print("6. Реальная модель: речь без пауз границ не даёт")
-# В записи есть настоящие паузы (тихие чанки на 0.0-0.6 и 2.4 с), поэтому берём
-# только чанки с речью и склеиваем их подряд: пауз в таком сигнале нет.
+# The recording has real pauses (quiet chunks at 0.0-0.6 s and 2.4 s), so we take
+# only chunks containing speech and concatenate them: such a signal has no pauses.
 chunks = []
 for offset in range(0, speech.size, 2400):
     piece = speech[offset:offset + 2400]

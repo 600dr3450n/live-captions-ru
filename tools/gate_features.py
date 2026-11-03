@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
-"""Диагностика: есть ли признак, отличающий речь от шума/гула/тона, кроме громкости.
+"""Diagnostics: is there a feature separating speech from noise/hum/tone other than loudness.
 
-Считаем по чанкам 300 мс (как в модели) статистику 20-мс кадров:
-  cv  — коэффициент вариации энергии кадров (речь модулирована силлабами)
-  p2r — пик-фактор чанка
+Computed per 300 ms chunk (as in the model) over 20 ms frame statistics:
+  cv  — coefficient of variation of frame energy (speech is syllable-modulated)
+  p2r — peak factor of the chunk
 
-Это не тест, а измерительный инструмент: он печатает таблицу и ничего не проверяет,
-поэтому живёт в tools/, а не в tests/. Набор файлов берётся из LCRU_GATE_SET
-(по умолчанию /tmp/gate_set), как в tests/gate_eval.py.
+This is not a test but a measuring tool: it prints a table and asserts nothing,
+so it lives in tools/, not tests/. The file set comes from LCRU_GATE_SET
+(default: gate_set under the system temp dir), as in tests/gate_eval.py.
 """
 from __future__ import annotations
 
 import os
+import tempfile
 import wave
 from pathlib import Path
 
 import numpy as np
 
-SET_DIR = Path(os.environ.get("LCRU_GATE_SET", "/tmp/gate_set"))
+SET_DIR = Path(os.environ.get("LCRU_GATE_SET", Path(tempfile.gettempdir()) / "gate_set"))
 CHUNK = 2400
-FRAME = 160  # 20 мс при 8 кГц
+FRAME = 160  # 20 ms at 8 kHz
 
 FILES = [
     "speech_clean.wav",

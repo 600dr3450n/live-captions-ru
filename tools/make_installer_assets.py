@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Картинки мастера установки из иконки приложения.
+"""Installer wizard images generated from the application icon.
 
-Для classic-стиля Inno Setup: слева крупный баббл на белом фоне, в правом
-верхнем углу тот же баббл на прозрачном фоне. Без надписей.
+For the Inno Setup classic style: a large bubble on a white background on the left,
+the same bubble on a transparent background in the top-right corner. No labels.
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ WHITE = (255, 255, 255, 255)
 
 
 def icon_rgba(px: int) -> Image.Image:
-    """Иконка приложения нужного размера, обрезанная по непрозрачным краям."""
+    """Application icon of the requested size, cropped to opaque edges."""
     image = Image.open(ICON)
     image.size = (256, 256)
     image = image.convert("RGBA")
@@ -29,7 +29,7 @@ def icon_rgba(px: int) -> Image.Image:
 
 
 def wizard() -> None:
-    """Левая панель мастера: соотношение 164:314, черный баббл на белом."""
+    """Wizard left panel: 164:314 aspect, black bubble on white."""
     width, height = 404, 772
     canvas = Image.new("RGBA", (width, height), WHITE)
     margin = 18
@@ -41,7 +41,7 @@ def wizard() -> None:
 
 
 def small() -> None:
-    """Правый верхний угол: тот же баббл на прозрачном фоне."""
+    """Top-right corner: the same bubble on a transparent background."""
     size = 256
     canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     badge = icon_rgba(size)
@@ -51,7 +51,7 @@ def small() -> None:
 
 
 def drop_stale() -> None:
-    """Убирает прежние bmp и фон, которых больше нет в установщике."""
+    """Removes stale bmp and background files no longer used by the installer."""
     for name in ("wizard.bmp", "wizard-back.bmp", "wizard-back.png", "wizard-small.bmp"):
         path = OUT / name
         if path.exists():

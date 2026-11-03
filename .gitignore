@@ -4,6 +4,8 @@ __pycache__/
 *.egg-info/
 .venv/
 venv/
+.pytest_cache/
+.ruff_cache/
 
 # Model and build artefacts
 models/*
@@ -15,8 +17,10 @@ build/*
 *.log
 !build/LiveCaptionsRU.spec
 
-# Screenshots and local artefacts
+# Local test output and screenshots
 _artifacts/
+*.wav
+!tests/data/*.wav
 
 # Editors and OS
 .idea/

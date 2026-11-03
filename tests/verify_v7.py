@@ -1,4 +1,4 @@
-"""Проверка версии 7: центровка предпросмотра, реакция рамки на настройки, дефолты пользователя."""
+"""Version 7 verification: preview centering, frame reaction to settings, user defaults."""
 from __future__ import annotations
 
 import ctypes
@@ -126,7 +126,7 @@ def check_frame_reaction(app) -> bool:
 
     settings.geometry.width_px = 600
     settings.geometry.max_lines = 4
-    overlay.apply_settings(settings)  # так же, как это делает окно настроек
+    overlay.apply_settings(settings)  # same as the settings dialog does
     for _ in range(20):
         app.processEvents()
         time.sleep(0.02)
@@ -142,7 +142,7 @@ def check_frame_reaction(app) -> bool:
 
 
 def check_preview_transparency(app) -> bool:
-    """В образце: активное — только «СУБТИТРОВ», неподтверждённое — хвост, история — первая строка."""
+    """In the sample: only «СУБТИТРОВ» is active, the tail is unconfirmed, the history is the first line."""
     settings = settings_module.Settings()
     settings.appearance.uppercase = True
     settings.geometry.width_px = 1100
@@ -177,7 +177,7 @@ def check_preview_transparency(app) -> bool:
 
 
 def check_word_fits_box(app) -> bool:
-    """Недописанное слово не должно вылезать за подложку."""
+    """An unfinished word must not overflow the backdrop."""
     settings = settings_module.Settings()
     settings.geometry.width_px = 460
     settings.geometry.max_lines = 3

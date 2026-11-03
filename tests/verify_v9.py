@@ -1,4 +1,4 @@
-"""Проверка версии 11: верхняя строка без подсветки, межбуквенный интервал, порядок вкладок, крупная иконка."""
+"""Version 11 check: top line without highlight, letter spacing, tab order, large icon."""
 from __future__ import annotations
 
 import sys
@@ -20,14 +20,14 @@ ART.mkdir(exist_ok=True)
 
 
 def check_upper_line_not_highlighted(app) -> bool:
-    """Активный текст, поднявшийся в верхнюю строку, рисуется как «предыдущий текст»."""
+    """Active text that has risen to the top line is drawn as "previous text"."""
     settings = settings_module.Settings()
     settings.geometry.width_px = 520
     settings.geometry.max_lines = 2
     settings.appearance.uppercase = True
     settings.appearance.backdrop_enabled = False
     overlay = SubtitleOverlay(settings, exclude_from_capture=False)
-    # фраза, которая точно не помещается в одну строку при ширине 520
+    # a phrase that certainly does not fit on one line at width 520
     text = "сегодня утром мы проверили субтитры и всё работает отлично"
     words = text.split()
     overlay.set_text(text, len(words), 0, len(words))
@@ -59,7 +59,7 @@ def check_upper_line_not_highlighted(app) -> bool:
 
 
 def check_letter_spacing(app) -> bool:
-    """Межбуквенный интервал меняет ширину текста и виден на картинке."""
+    """Letter spacing changes the text width and is visible in the image."""
     print("\n=== Межбуквенный интервал ===")
     widths = []
     for spacing in (0.0, 4.0):
@@ -83,7 +83,7 @@ def check_letter_spacing(app) -> bool:
 
 
 def check_dialog_order_and_icon(app) -> bool:
-    """«Общее» — первым разделом; иконка без рамки и во весь размер."""
+    """The "General" section is first; the icon has no frame and fills its full size."""
     print("\n=== Разделы настроек и иконка ===")
     dialog = SettingsDialog(
         settings_module.Settings(), on_change=lambda s: None, on_apply=lambda s: None, on_edit_box=lambda: None

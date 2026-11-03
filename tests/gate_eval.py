@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Прогон набора сложных записей: текст, CER против чистого эталона, доля декодированных чанков.
+"""Run over the hard-recording set: text, CER against the clean reference, share of decoded chunks.
 
-Запускается дважды: до отсечки и после, чтобы сравнить.
+Run twice: before and after the cutoff, to compare.
 """
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ def cer(reference: str, hypothesis: str) -> float:
     ref, hyp = reference.split(), hypothesis.split()
     if not ref:
         return 0.0 if not hyp else 1.0
-    # расстояние по символам на уровне всей строки
+    # character-level distance over the whole line
     r, h = list(reference), list(hypothesis)
     prev = list(range(len(h) + 1))
     for i, rc in enumerate(r, 1):

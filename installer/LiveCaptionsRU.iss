@@ -15,8 +15,8 @@ AppPublisherURL=https://github.com/600dr3450n
 DefaultDirName={autopf}\LiveCaptionsRU
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
-; Без этой строки Inno показывает страницу приветствия, и тогда крупная
-; картинка мастера видна не только на финальной странице.
+; Without this line Inno still shows the welcome page, which means the large wizard
+; image appears on every page and not only on the final one.
 DisableWelcomePage=no
 ; The bundled Qt 6 build does not start on anything older than Windows 10 1809.
 MinVersion=10.0.17763

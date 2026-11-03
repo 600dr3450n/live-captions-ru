@@ -1,4 +1,4 @@
-"""Проверка версии 4: окно настроек, выбор цвета, уровни подсветки, правка рамки, иконки."""
+"""Version 4 verification: settings dialog, color picker, highlight levels, frame editing, icons."""
 from __future__ import annotations
 
 import ctypes
@@ -49,7 +49,7 @@ class FakeMouseEvent:
 
 
 def check_dialog(app) -> bool:
-    """Три раздела, нужные группы, тумблеры гасят свои строки, страницы не обрезаны."""
+    """Three sections, required groups, toggles dim their own rows, pages are not clipped."""
     from PySide6.QtWidgets import QGroupBox, QListWidget, QScrollArea
 
     settings = settings_module.Settings()
@@ -139,7 +139,7 @@ def check_color_dialog(app) -> bool:
 
 def check_opacity_levels(app) -> bool:
     settings = settings_module.Settings()
-    settings.geometry.max_lines = 3  # чтобы поместилась ещё и предыдущая реплика
+    settings.geometry.max_lines = 3  # so the previous line also fits
     overlay = SubtitleOverlay(settings, exclude_from_capture=False)
     long_text = "добрый день меня зовут анна я звоню по поводу вашего обращения в службу поддержки"
     words = long_text.split()
@@ -201,7 +201,7 @@ def check_edit_mode(app) -> bool:
     )
     print(f"  Курсоры под ручки и перемещение: {'ок' if cursors_ok else 'ОШИБКА'}")
 
-    # прилипание к левому краю экрана: тянем рамку далеко влево
+    # snapping to the left screen edge: drag the frame far to the left
     screen = QGuiApplication.primaryScreen().availableGeometry()
     overlay.setGeometry(screen.left() + 120, screen.top() + 300, overlay.width(), overlay.height())
     for _ in range(10):
@@ -217,7 +217,7 @@ def check_edit_mode(app) -> bool:
     snap_ok = snapped_x == screen.left()
     print(f"  Прилипание к левому краю: x={snapped_x} (край экрана {screen.left()}) — {'ок' if snap_ok else 'ОШИБКА'}")
 
-    # растягивание за правый нижний угол увеличивает рамку и число строк
+    # resizing from the bottom-right corner enlarges the frame and the line count
     width_before, lines_before = overlay.width(), settings.geometry.max_lines
     overlay.mousePressEvent(FakeMouseEvent(overlay.width() - 2, overlay.height() - 2))
     overlay.mouseMoveEvent(FakeMouseEvent(overlay.width() + 160, overlay.height() + 70))
@@ -250,8 +250,8 @@ def check_icons(app) -> bool:
         return np.frombuffer(image.constBits(), dtype=np.uint8).reshape(image.height(), image.width(), 4)[:, :, 3]
 
     diff = int((np.abs(alpha(small).astype(int) - alpha(big).astype(int)) > 30).sum())
-    # Рисунок один и тот же на всех размерах (в трее тот же пузырёк с «Aa»);
-    # проверяем, что мелкая иконка не пустая и содержит пузырёк
+    # The pixmap is identical at all sizes (the tray uses the same "Aa" bubble);
+    # check that the small icon is not empty and contains the bubble
     filled = float((alpha(small) > 50).mean())
     print(f"  Заливка на 16 px: {filled * 100:.0f}% площади (различие с крупной: {diff} пикселей)")
     for size in (16, 32):

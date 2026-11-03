@@ -1,4 +1,4 @@
-"""Проверка версии 5: прозрачность, обводка, регистр, подложка, кнопка «Отмена», иконка, очистка текста."""
+"""Version 5 verification: transparency, outline, letter case, backdrop, Cancel button, icon, text clearing."""
 from __future__ import annotations
 
 import ctypes
@@ -49,7 +49,7 @@ def render_overlay(app, settings) -> np.ndarray:
     overlay = SubtitleOverlay(settings, exclude_from_capture=False)
     text = "проверка субтитров и еще слова"
     words = text.split()
-    # последнее слово — ещё распознаётся (неподтверждённое), активное — предпоследнее
+    # the last word is still unconfirmed, the active one is the second-to-last
     overlay.set_text(text, len(words) - 1, len(words) - 3, len(words) - 1)
     for _ in range(30):
         app.processEvents()
@@ -62,11 +62,11 @@ def render_overlay(app, settings) -> np.ndarray:
 
 
 def ink(image) -> int:
-    """Мера «чернил» на картинке — сумма непрозрачности по всем пикселям.
+    """Ink measure of an image: the sum of opacity across all pixels.
 
-    В старых наборах мерили «плотные» пиксели (альфа > 200); после перехода на
-    честную обводку это перестало быть чутьистым: приглушённый текст вообще не
-    даёт плотных пикселей, и разница не видна.
+    Older sets measured "dense" pixels (alpha > 200); after switching to a
+    real outline this stopped being sensitive: dimmed text yields no dense
+    pixels at all, so the difference is invisible.
     """
     return int(image[:, :, 3].astype(np.int64).sum())
 
@@ -74,7 +74,7 @@ def ink(image) -> int:
 def check_transparency(app) -> bool:
     settings = settings_module.Settings()
     settings.geometry.max_lines = 3
-    settings.appearance.backdrop_enabled = False  # меряем только текст
+    settings.appearance.backdrop_enabled = False  # measure text only
     settings.appearance.shadow = False
     settings.appearance.uppercase = False
 
@@ -84,7 +84,7 @@ def check_transparency(app) -> bool:
     settings.appearance.text_transparency = 100
     invisible = render_overlay(app, settings)
     diff = int((np.abs(visible[:, :, 3].astype(int) - invisible[:, :, 3].astype(int)) > 20).sum())
-    active_ink = ink(visible) - ink(invisible)  # вклад активного текста (история остаётся)
+    active_ink = ink(visible) - ink(invisible)  # contribution of the active text (history stays)
     print(f"  Активный текст: 0 % → чернил {ink(visible)}, 100 % → чернил {ink(invisible)}, вклад текста {active_ink}")
     ok = diff > 200 and active_ink > 100_000
 
@@ -210,7 +210,7 @@ def check_edit_cancel(app) -> bool:
     print(f"  После «Отмена»: {cancelled.x()},{cancelled.y()} — {'ок' if cancelled.topLeft() == original.topLeft() else 'ОШИБКА'}")
     print(f"  Настройки не изменены: {'ок' if settings.geometry.position == 'custom' or settings.geometry.max_lines == 2 else 'проверьте'}")
 
-    # «Готово» — изменения сохраняются
+    # Done button — changes are saved
     overlay.begin_edit_mode()
     for _ in range(10):
         app.processEvents()

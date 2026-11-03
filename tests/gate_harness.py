@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Офлайн-прогон T-one на файлах: текст, RMS, время.
+"""Offline T-one run over files: text, RMS, time.
 
-Используется как база для сравнения до/после отсечки по энергии.
+Serves as the baseline for comparing before/after the energy cutoff.
 """
 from __future__ import annotations
 

@@ -1,0 +1,65 @@
+name: Bug report
+description: Something in the app does not work as described
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not paste the recognised text or the contents of a customer call. The log at
+        `%LOCALAPPDATA%\LiveCaptionsRU\app.log` never contains it, so the log is the safe
+        thing to attach.
+
+        For a security problem use the private channel in
+        [SECURITY.md](https://github.com/600dr3450n/live-captions-ru/blob/main/.github/SECURITY.md)
+        instead of this form.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Shown in the settings dialog, section "About".
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows build
+      description: Run `winver` and copy the version and build number.
+      placeholder: "Windows 10 22H2, build 19045.5011"
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: How it was installed
+      options:
+        - Installer (setup.exe)
+        - Portable zip
+        - Built from sources
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log excerpt
+      description: >-
+        Open the log with "Открыть журнал событий" in the settings dialog and paste the
+        lines around the moment of the problem. Optional, but it usually decides the case.
+      render: text
+    validations:
+      required: false
+  - type: input
+    id: device
+    attributes:
+      label: Output device
+      description: The device the sound was playing on, if the problem is about capture.
+      placeholder: "Realtek speakers, USB headset, Bluetooth"
+    validations:
+      required: false

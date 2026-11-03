@@ -1,0 +1,41 @@
+version: 2
+
+updates:
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    commit-message:
+      prefix: "deps"
+    # Runtime versions are pinned on purpose and the README numbers were measured with
+    # them, so a bump needs a rebuild and a re-measure rather than a merge.
+    groups:
+      dev-tooling:
+        patterns:
+          - "pytest"
+          - "ruff"
+          - "Pillow"
+    ignore:
+      - dependency-name: "PySide6"
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: "onnxruntime"
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: "numpy"
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: "soundcard"
+        update-types: ["version-update:semver-minor"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    commit-message:
+      prefix: "ci"

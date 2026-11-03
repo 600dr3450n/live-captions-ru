@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Готовит набор сложных записей: тихие, шумные, быстрые, тишина, гул, шум."""
+"""Prepares a set of hard recordings: quiet, noisy, fast, silence, hum, noise."""
 from __future__ import annotations
 
 import os
@@ -41,13 +41,13 @@ def rms_of(x: np.ndarray) -> float:
 
 
 def speech_like_noise(n: int, rng: np.random.RandomState) -> np.ndarray:
-    """Шум с речевой огибающей: похож на гулкий офис, а не на белый шум."""
+    """Noise with a speech-like envelope: resembles a humming office, not white noise."""
     env = 0.25 + 0.75 * np.abs(np.sin(2 * np.pi * 0.7 * np.arange(n) / RATE + 0.4))
     return rng.randn(n).astype(np.float32) * env
 
 
 def fast(samples: np.ndarray, factor: float) -> np.ndarray:
-    """Ускорение темпа через простую передискретизацию: речь становится неразборчивой."""
+    """Tempo increase via simple resampling: speech becomes unintelligible."""
     count = int(len(samples) / factor)
     return np.interp(np.arange(count) * factor, np.arange(len(samples)), samples).astype(np.float32)
 
@@ -71,13 +71,13 @@ def main() -> int:
     write("speech_fast_1_5x.wav", fast(speech, 1.5))
     write("speech_fast_2x.wav", fast(speech, 2.0))
 
-    # очень тихая речь в шумной комнате: оба фактора сразу
+    # very quiet speech in a noisy room: both factors at once
     noise = speech_like_noise(n, rng)
     quiet = speech * 10 ** (-20 / 20)
     noise *= rms_of(quiet) / rms_of(noise) / 10 ** (10 / 20)
     write("speech_quiet_snr_10db.wav", quiet + noise)
 
-    # не должно давать текста
+    # must yield no text
     write("silence_30s.wav", np.zeros(30 * RATE, dtype=np.float32))
     write("noise_floor_50db.wav", rng.randn(30 * RATE).astype(np.float32) * 10 ** (-50 / 20))
     hum = 0.02 * np.sin(2 * np.pi * 50 * np.arange(30 * RATE) / RATE)

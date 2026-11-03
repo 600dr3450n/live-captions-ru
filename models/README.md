@@ -31,17 +31,26 @@ certutil -hashfile models\t-one\model.onnx SHA256
 
 ## The upstream reference model
 
-`python tools/fetch_model.py` downloads the file published by the sherpa-onnx
-project (`csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08` on Hugging
-Face):
+The upstream publish of the same export is a smaller, mixed-precision file
+(`csukuangfj/sherpa-onnx-streaming-t-one-russian-2025-09-08` on Hugging Face):
 
 - size: 144 193 702 bytes
 - SHA-256: `5ded080e2a6c86ecc11bcb0902d77524eb3e8b0844cb0c0754347f5aafb4dabc`
 
-The download is verified against that hash. This file is smaller and useful for
-tests and for a quick look at the model, but it is a different, mixed-precision file (379 of its
-549 initializers are FP16, the release one is FP32 throughout): it is not what the
-release archive contains and it does not produce byte-identical output.
+It is useful for tests and for a quick look at the model, but it is a different file
+(379 of its 549 initializers are FP16, the release one is FP32 throughout): it is not
+what the release archive contains and it does not produce byte-identical output. The
+project does not download it automatically; fetch it by hand if you need it.
+
+## Checking the files
+
+```powershell
+python tools\verify_model.py                  # checks models\t-one
+python tools\verify_model.py --dir <folder>   # checks another copy
+```
+
+The app repeats the same check in the background on every start and logs
+`model_verify_mismatch` when a file differs from the hashes above.
 
 ## tokens.txt
 

@@ -1,4 +1,4 @@
-"""Скриншоты нового окна настроек (три раздела) и предпросмотра субтитров."""
+"""Screenshots of the new settings window (three sections) and subtitle preview."""
 from __future__ import annotations
 
 import sys

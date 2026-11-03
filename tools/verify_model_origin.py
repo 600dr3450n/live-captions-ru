@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Проверяет, что поставляемая модель — это FP32-конверсия апстримного FP16-экспорта.
+"""Verify that the shipped model is an FP32 conversion of the upstream FP16 export.
 
-Смысл: в релизе лежит измененный файл, и лицензия Apache 2.0 требует это показать.
-Скрипт сравнивает графы двух файлов и печатает факты, по которым видно, что
-изменилась только точность хранения весов.
+Rationale: the release contains a modified file, and the Apache 2.0 license
+requires showing this. The script compares the graphs of both files and prints
+facts demonstrating that only the weight storage precision changed.
 
-Запуск (нужен пакет onnx):
+Usage (requires the onnx package):
 
     python tools/verify_model_origin.py \
         --upstream /path/to/upstream/model.onnx \
@@ -24,7 +24,7 @@ FP32 = 1
 def describe(path: Path) -> dict:
     try:
         import onnx
-    except ImportError as exc:  # pragma: no cover - зависит от окружения
+    except ImportError as exc:  # pragma: no cover - environment-dependent
         raise SystemExit("нужен пакет onnx: python -m pip install onnx") from exc
 
     model = onnx.load(str(path), load_external_data=False)

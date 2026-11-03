@@ -1,8 +1,8 @@
-"""Проверка эталонного settings.json на момент релиза 1.0.1.
+"""Check of the reference settings.json as of release 1.0.1.
 
-Схема сверена с фактическим файлом (43 поля). Проверяем типы и диапазоны того,
-что реально пишется на диск, roundtrip, совместимость со старым файлом и то, что
-чужие значения не роняют загрузку.
+The schema was verified against the actual file (43 fields). We check types and ranges of what
+is actually written to disk, roundtrip, compatibility with an old file, and that foreign
+values do not break loading.
 """
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
-"""Проверка версии 10: конец реплики не оставляет слов активными, обводка/тень гаснут вместе с текстом,
-задержка показа слова не растёт, перенос строк работает."""
+"""Version 10 check: end of utterance leaves no active words, outline/shadow fade with the text,
+word show delay does not grow, line wrapping works."""
 from __future__ import annotations
 
 import queue
@@ -24,7 +24,7 @@ ART.mkdir(exist_ok=True)
 
 
 class ScriptedRecognizer:
-    """Отдаёт заданную последовательность текстов; конец реплики — по списку текстов."""
+    """Returns a given sequence of texts; end of utterance is driven by the list of texts."""
 
     def __init__(self, script: list[str], endpoints: tuple[str, ...] = ()) -> None:
         self._script = list(script)
@@ -72,7 +72,7 @@ def run_worker(script: list[str], endpoints: tuple[str, ...] = (), chunks: int =
 
 
 def check_endpoint_clears_active() -> bool:
-    """Конец реплики: фраза уходит в историю и НЕ остаётся активной (иначе выглядит подсвеченной)."""
+    """End of utterance: the phrase moves to history and does NOT stay active (otherwise it looks highlighted)."""
     events, _ = run_worker(
         ["привет мир", "привет мир ", "привет мир как дела", "привет мир как дела", ""],
         endpoints=("привет мир как дела",),
@@ -94,7 +94,7 @@ def check_endpoint_clears_active() -> bool:
 
 
 def check_outline_fades_with_text(app) -> bool:
-    """Яркость пикселей слова падает монотонно вместе с прозрачностью текста: обводка не «держит» текст."""
+    """Word pixel brightness falls monotonically with text transparency: the outline does not "hold" the text."""
     print("\n=== Прозрачность текста гасит слово целиком ===")
     levels = (0, 25, 50, 75, 100)
     masses = []
@@ -102,7 +102,7 @@ def check_outline_fades_with_text(app) -> bool:
         settings = settings_module.Settings()
         settings.appearance.text_transparency = transparency
         settings.appearance.uppercase = True
-        settings.appearance.backdrop_enabled = False  # меряем только чернила текста
+        settings.appearance.backdrop_enabled = False  # measure only the text ink
         settings.appearance.shadow = False
         settings.geometry.width_px = 700
         settings.geometry.max_lines = 2
@@ -122,7 +122,7 @@ def check_outline_fades_with_text(app) -> bool:
 
     ok = (
         masses[-1] == 0
-        and masses[0] * 0.35 < masses[2] < masses[0] * 0.65  # 50 % прозрачности ≈ половина чернил
+        and masses[0] * 0.35 < masses[2] < masses[0] * 0.65  # 50 % transparency ≈ half the ink
         and masses[1] < masses[0]
         and masses[3] < masses[2]
     )
@@ -134,7 +134,7 @@ def check_outline_fades_with_text(app) -> bool:
 
 
 def check_emit_is_immediate() -> bool:
-    """Новое слово уходит на экран сразу, без ожидания троттлинга подсветки."""
+    """A new word reaches the screen immediately, without waiting for the highlight throttle."""
     print("\n=== Новое слово показывается без лишней задержки ===")
     events, _ = run_worker(["раз", "раз ", "раз два", "раз два "], chunks=6)
     texts = [event[1] for event in events]

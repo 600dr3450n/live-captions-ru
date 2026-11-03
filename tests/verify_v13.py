@@ -1,7 +1,7 @@
-"""Отсечка по энергии: тишина и гул не доходят до модели, тихая речь доходит.
+"""Energy cutoff: silence and hum do not reach the model, quiet speech does.
 
-Модель не загружается: подменяем _run счётчиком, поэтому тест быстрый и без
-274 МБ весов. Проверяем именно логику гейта, предбуфера и удержания.
+The model is not loaded: _run is replaced by a counter, so the test is fast and needs no
+274 MB of weights. We check the gate, prebuffer and hold logic itself.
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ def check(condition: bool, label: str) -> None:
 
 
 class FakeASR(asr_mod.TOneStreamingASR):
-    """Движок без модели: считает, сколько чанков реально ушло в декодер."""
+    """Engine without a model: counts how many chunks actually reach the decoder."""
 
     def __init__(self) -> None:  # noqa: D107
         self.decoded: list[np.ndarray] = []
@@ -41,7 +41,7 @@ class FakeASR(asr_mod.TOneStreamingASR):
 
 
 def make_speech(seconds: float, amplitude: float, seed: int = 3) -> np.ndarray:
-    """Сигнал с силлабической модуляцией, как речь: пачки по 200 мс с паузами."""
+    """Signal with syllabic modulation, like speech: 200 ms blocks with pauses."""
     rng = np.random.RandomState(seed)
     total = int(seconds * asr_mod.SAMPLE_RATE)
     signal = np.zeros(total, dtype=np.float32)

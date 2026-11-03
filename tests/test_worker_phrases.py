@@ -1,4 +1,4 @@
-"""Проверка логики разделения реплик в рабочем потоке (с поддельным распознавателем)."""
+"""Check of utterance-splitting logic in the worker thread (with a fake recognizer)."""
 from __future__ import annotations
 
 import queue
@@ -16,7 +16,7 @@ import main as app_main  # noqa: E402
 
 
 class FakeRecognizer:
-    """Отдаёт заранее заданную последовательность гипотез."""
+    """Returns a predefined sequence of hypotheses."""
 
     def __init__(self, script: list[tuple[str, bool]]) -> None:
         self.script = script
@@ -52,7 +52,7 @@ def drive(script: list[tuple[str, bool]], repeats: int = 2) -> tuple[list[tuple]
     chunk = SimpleNamespace(samples=np.zeros(960, dtype=np.float32), rate=48000)
     for _ in range(len(script) * repeats):
         audio.put(chunk)
-        time.sleep(0.12)  # поток обновляет экран не чаще 80 мс
+        time.sleep(0.12)  # worker refreshes the screen no more often than every 80 ms
     time.sleep(0.3)
     worker.stop()
     worker.join(timeout=2.0)

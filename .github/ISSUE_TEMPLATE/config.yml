@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/600dr3450n/live-captions-ru/security/advisories/new
+    about: Report a vulnerability privately, not in a public issue.
+  - name: Documentation
+    url: https://github.com/600dr3450n/live-captions-ru#troubleshooting
+    about: Requirements, install steps and troubleshooting are in the README.

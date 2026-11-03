@@ -1,4 +1,4 @@
-"""Проверка правок 1.0.1: трей, предпросмотр при выключении, поля, анимация, цвет."""
+"""Check of the 1.0.1 fixes: tray, preview when disabled, fields, animation, color."""
 from __future__ import annotations
 
 import sys
@@ -26,7 +26,7 @@ def check(name: str, value: bool, extra: str = "") -> None:
     ok = ok and value
 
 
-# ---------------------------------------------------------------- тумблеры/поля
+# ---------------------------------------------------------------- toggles/fields
 s = sm.Settings()
 dialog = SettingsDialog(s, on_change=lambda _s: None, on_apply=lambda _s: None, on_edit_box=lambda: None)
 dialog.show()
@@ -49,7 +49,7 @@ widths = {dialog.lines_spin.width(), dialog.line_spin.width(), dialog.letter_spi
           dialog.corner_spin.width(), dialog.size_combo.width()}
 check("поля одной ширины", len(widths) == 1, f"({sorted(widths)})")
 
-# ширина в процентах и пикселях связаны
+# width in percent and pixels are linked
 dialog.width_control.slider.setValue(60)
 for _ in range(3):
     app.processEvents()
@@ -62,7 +62,7 @@ for _ in range(3):
 moved = dialog.width_control.slider.value()
 check("пиксели двигают ползунок", moved >= 20, f"({moved} % на 900 px)")
 
-# цвет — компактное окно
+# color — compact window
 from color_dialog import ColorDialog  # noqa: E402
 
 color = ColorDialog(sm.QColor("#56436D") if hasattr(sm, "QColor") else None) if False else None
@@ -76,7 +76,7 @@ check("окно цвета компактное", color.width() <= 320 and color
 check("две кнопки", [b.text() for b in color.findChildren(type(color.findChildren(object)[0])) if hasattr(b, "text")][:0] == [])
 color.close()
 
-# ------------------------------------------------------------------- предпросмотр
+# ------------------------------------------------------------------- preview
 print("=== Предпросмотр ===")
 o = SubtitleOverlay(sm.Settings(), exclude_from_capture=False)
 o.set_preview(True)
@@ -90,7 +90,7 @@ check("без настроек выключение скрывает рамку"
 check("при выключении текст стёрт", o._text == "")
 o.deleteLater()
 
-# ---------------------------------------------------------------- автозапуск
+# ---------------------------------------------------------------- autostart
 print("=== Автозапуск ===")
 import paths  # noqa: E402
 
@@ -108,7 +108,7 @@ except Exception as exc:  # noqa: BLE001
     check("автозапуск", False, repr(exc))
 
 
-# ------------------------------------------------------------- иконка без точки
+# ------------------------------------------------------------- icon without a dot
 print("=== Иконка ===")
 from main import make_icon  # noqa: E402
 
@@ -121,7 +121,7 @@ for y in range(pixmap.height()):
             green += 1
 check("на иконке нет зеленого кружка", green == 0, f"(зеленых пикселей {green})")
 
-# --------------------------------------------------- автоочистка зовёт очистку
+# --------------------------------------------------- auto-clear invokes clearing
 print("=== Автоочистка ===")
 
 
@@ -142,7 +142,7 @@ captions.overlay._clear_idle()  # noqa: SLF001
 check("автоочистка просит распознаватель забыть текст", stub.cleared == 1, f"({stub.cleared})")
 captions.tray.hide()
 
-# ------------------------------------------------ «О приложении» на всю ширину
+# ------------------------------------------------ "About" spans the full width
 print("=== О приложении ===")
 about = SettingsDialog(sm.Settings(), on_change=lambda _s: None, on_apply=lambda _s: None, on_edit_box=lambda: None)
 about._nav.setCurrentRow(2)  # noqa: SLF001
@@ -158,7 +158,7 @@ check("текст во всю ширину поля", wide, f"({texts[0].width()
 about.close()
 
 
-# ------------------------------------------------- превью при выключении
+# ------------------------------------------------- preview when disabled
 print("=== Превью ===")
 preview = SubtitleOverlay(sm.Settings(), exclude_from_capture=False)
 preview.set_preview(True)
@@ -172,7 +172,7 @@ check("образец текста остался", preview._text == text_before
 check("подложка осталась", preview.isVisible())
 preview.deleteLater()
 
-# ------------------------------------------------------- обрезка в выборе цвета
+# ------------------------------------------------------- clipping in the color picker
 print("=== Цвет за пределами поля ===")
 from color_dialog import ColorCanvas  # noqa: E402
 from PySide6.QtCore import QPointF  # noqa: E402
@@ -191,7 +191,7 @@ canvas._update_from(QPointF(sq.left() + 10, sq.bottom() + 3))  # noqa: SLF001
 check("щель между полем и полосой ничего не меняет", canvas.color().name() == "#808080",
       f"({canvas.color().name()})")
 
-# ------------------------------------------------------------ подсказка трея
+# ------------------------------------------------------------ tray tooltip
 print("=== Подсказка трея ===")
 tray_app = CaptionsApp(app, sm.Settings())
 check("подсказка — только название", tray_app.tray.toolTip() == "Live Captions RU", f"({tray_app.tray.toolTip()!r})")

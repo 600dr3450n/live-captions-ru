@@ -44,6 +44,21 @@ from worker import RecognitionWorker
 log = logging.getLogger("main")
 
 
+def _is_local_log(path) -> bool:
+    """True when the path is the log inside our own data folder.
+
+    The tray action opens the log through the shell association, so the target is
+    re-checked before that call: a junction or a redirected LOCALAPPDATA must not turn
+    the menu item into a way to start an arbitrary file.
+    """
+    try:
+        resolved = path.resolve()
+        root = paths.app_data_dir().resolve()
+    except OSError:
+        return False
+    return resolved.suffix == ".log" and root in resolved.parents
+
+
 def _recycle_count() -> int:
     """How many times this process was relaunched by the memory watchdog.
 
@@ -446,6 +461,9 @@ class CaptionsApp(QObject):
                 log_path.parent.mkdir(parents=True, exist_ok=True)
                 log_path.touch()
                 log.info("log_file_created path=%s", log_path)
+            if not _is_local_log(log_path):
+                log.error("log_open_refused path=%s reason=outside_app_data", log_path)
+                return
             os.startfile(str(log_path))  # noqa: S606
         except OSError as exc:
             log.error("log_open_failed path=%s error=%r", log_path, exc)
