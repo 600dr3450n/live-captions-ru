@@ -1,11 +1,33 @@
-# Live Captions RU
+<div align="center">
 
-English | [Русский](docs/README.ru.md)
+<img src="docs/images/icon.png" width="128" alt="Live Captions RU">
 
-Real-time Russian captions for Windows. The program listens to whatever the computer
-plays on its default output device, recognises the speech locally and shows it as text
-in a floating subtitle box. It works fully offline: no network access at runtime, no
-telemetry, and the audio never leaves the machine.
+<h1>Live Captions RU</h1>
+
+<p><b>Real-time Russian captions for Windows. Local, offline, no telemetry, the audio never leaves the machine.</b></p>
+
+<p>
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/Download-1.0.0-2ea043?style=for-the-badge&logo=windows11&logoColor=white" alt="Download 1.0.0"></a>
+  <a href="https://pay.cloudtips.ru/p/318e1bac"><img src="https://img.shields.io/badge/Tip_the_author-cloudtips-ff5e5b?style=for-the-badge&logo=buymeacoffee&logoColor=white" alt="Tip the author"></a>
+</p>
+
+<p>
+  <img src="https://img.shields.io/github/v/release/600dr3450n/live-captions-ru?style=for-the-badge" alt="Latest release">
+  <img src="https://img.shields.io/github/downloads/600dr3450n/live-captions-ru/total?style=for-the-badge" alt="Downloads">
+  <img src="https://img.shields.io/github/license/600dr3450n/live-captions-ru?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Windows-10_1809+_%7C_11_x64-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows 10 1809 or newer, Windows 11, x64">
+</p>
+
+<p>English | <a href="docs/README.ru.md">Русский</a></p>
+
+<img src="docs/images/screenshot.png" width="820" alt="Subtitle box at the bottom of the screen and the settings window">
+
+</div>
+
+The program listens to whatever the computer plays on its default output device,
+recognises the speech locally and shows it as text in a floating subtitle box. It
+works fully offline: no network access at runtime, no telemetry, and the audio
+never leaves the machine.
 
 Built for people who find it hard to follow speech, for example when the voice comes
 through a headset all day in a support queue.
@@ -197,10 +219,6 @@ archives only. To build from source, put the fp32 export described in
 `tools/verify_model.py`. The upstream quantized file is smaller and useful for tests, but it
 is a different file and does not produce byte-identical output.
 
-`tools/make_icons.py` is not needed for a normal build: `app/icon.ico` and
-`app/icon_off.ico` are already in the repository. Run it only to re-render them after a
-design change (it needs Pillow).
-
 ## How it works
 
 ```
@@ -274,7 +292,7 @@ app/                application code
   settings.py       settings model, validation and migrations
   paths.py          folders, autostart, logging setup
 tests/              verification scripts (Qt based, run on a real desktop)
-tools/              build, model check and icon helpers
+tools/              build and model check helpers
 assets/             icon and installer artwork
 docs/               Russian manual
 installer/          Inno Setup script
