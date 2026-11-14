@@ -7,7 +7,7 @@
 <p><b>Real-time Russian captions for Windows. Local, offline, no telemetry, the audio never leaves the machine.</b></p>
 
 <p>
-  <a href="../../releases/latest"><img src="https://img.shields.io/badge/Download-1.0.0-2ea043?style=for-the-badge&logo=windows11&logoColor=white" alt="Download 1.0.0"></a>
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/Download-1.0.1-2ea043?style=for-the-badge&logo=windows11&logoColor=white" alt="Download 1.0.1"></a>
   <a href="https://pay.cloudtips.ru/p/318e1bac"><img src="https://img.shields.io/badge/Tip_the_author-cloudtips-ff5e5b?style=for-the-badge&logo=buymeacoffee&logoColor=white" alt="Tip the author"></a>
 </p>
 
@@ -81,11 +81,11 @@ through a headset all day in a support queue.
 
 Two packages are published in [Releases](../../releases):
 
-- `LiveCaptionsRU-1.0.0-setup.exe` is the installer. It runs without administrator
+- `LiveCaptionsRU-1.0.1-setup.exe` is the installer. It runs without administrator
   rights, copies the app to `%LOCALAPPDATA%\Programs\LiveCaptionsRU`, adds a Start menu
   shortcut and can add a desktop shortcut and autostart, both optional and off by
   default. The installer interface is in Russian.
-- `LiveCaptionsRU-1.0.0-portable.zip` needs no installation: unpack it anywhere and run
+- `LiveCaptionsRU-1.0.1-portable.zip` needs no installation: unpack it anywhere and run
   `LiveCaptionsRU.exe` from the unpacked folder. Keep the folder contents together,
   `_internal` holds the runtime and the speech model.
 
@@ -101,7 +101,7 @@ or the portable build. Choose **More info**, then **Run anyway**. You can also c
 mark-of-the-web before starting the app:
 
 ```powershell
-Unblock-File .\LiveCaptionsRU-1.0.0-setup.exe
+Unblock-File .\LiveCaptionsRU-1.0.1-setup.exe
 ```
 
 **Smart App Control** on Windows 11 is stricter: it blocks unknown and unsigned code by
@@ -120,10 +120,10 @@ the check that matters.
 file before running it:
 
 ```powershell
-Get-FileHash .\LiveCaptionsRU-1.0.0-setup.exe -Algorithm SHA256
+Get-FileHash .\LiveCaptionsRU-1.0.1-setup.exe -Algorithm SHA256
 ```
 
-or with `certutil -hashfile LiveCaptionsRU-1.0.0-setup.exe SHA256`. The output has to
+or with `certutil -hashfile LiveCaptionsRU-1.0.1-setup.exe SHA256`. The output has to
 match the line in `SHA256SUMS.txt` character for character. The checksum file is
 published next to the binaries, so it confirms the download completed without
 corruption, not that the release itself is genuine: without a code signing certificate
@@ -188,7 +188,7 @@ rules before using it with third parties.
 
 ## Security
 
-- The current version is 1.0.0. Only the latest release gets fixes.
+- The current version is 1.0.1. Only the latest release gets fixes.
 - Report a vulnerability through the private channel described in
   [SECURITY.md](.github/SECURITY.md), not in a public issue.
 - The model files and the release assets are covered by SHA-256 checksums;
@@ -312,7 +312,7 @@ interface is Russian.
 of the `SetWindowDisplayAffinity` call: the box is meant for your eyes only. It needs
 Windows 10 version 2004 or newer.
 
-**Can I copy the recognised text?** Not in 1.0.0. The text is drawn in the overlay and
+**Can I copy the recognised text?** Not in 1.0.1. The text is drawn in the overlay and
 not stored, so there is nothing to copy after the fact.
 
 **Can I use my own model?** Yes. Put a different export into `models\t-one` next to the

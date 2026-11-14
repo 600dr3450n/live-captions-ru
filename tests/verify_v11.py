@@ -152,7 +152,7 @@ for _ in range(10):
     time.sleep(0.01)
 from PySide6.QtWidgets import QLabel as _QLabel  # noqa: E402
 
-texts = [w for w in about.findChildren(_QLabel) if w.text().startswith("Live Captions RU 1.0.0")]
+texts = [w for w in about.findChildren(_QLabel) if w.text().startswith(f"Live Captions RU {paths.APP_VERSION}")]
 wide = bool(texts) and texts[0].width() > about.width() - 260
 check("текст во всю ширину поля", wide, f"({texts[0].width() if texts else 0} px при окне {about.width()})")
 about.close()

@@ -4,6 +4,20 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-11-14
+
+### Fixed
+
+- The settings label for the word highlight duration is back to "Подсветка активного
+  текста". It had been renamed without a request, and the new wording described the
+  mechanism instead of the setting.
+- The tray icon no longer carries a status dot in its lower right corner. The yellow and
+  red badges appeared on their own while the app was running and read as a defect. The
+  tray now has exactly two looks, captions on and captions off, and the tooltip stays
+  the program name.
+
+[1.0.1]: https://github.com/600dr3450n/live-captions-ru/releases/tag/v1.0.1
+
 ## [1.0.0] - 2026-11-03
 
 First public release.

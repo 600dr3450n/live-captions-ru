@@ -138,16 +138,15 @@ class CaptionsApp(QObject):
         self._asr: TOneStreamingASR | None = None
         self._pipeline_lock = threading.Lock()
 
-        # (icon_on, kind, text) of the icon currently in the tray: the shell rebuilds
-        # the icon on every setIcon call, and the status timer fires every two seconds.
-        # The tooltip is set once below and never changes: hovering the tray icon always
-        # shows the program name, the state lives in the icon itself.
-        self._icon_state: tuple[bool, str, str] | None = None
+        # (icon_on, text) of the icon currently in the tray: the shell rebuilds the icon
+        # on every setIcon call, and the status timer fires every two seconds. Only the
+        # two looks of the icon change; the tooltip is set once below and never changes.
+        self._icon_state: tuple[bool, str] | None = None
         self._recycle_warned = False
         # Tick counter for the once-a-minute pipeline log; must exist before the first
         # _update_status() call below, not only before the timer starts.
         self._stats_tick = 0
-        self.tray = QSystemTrayIcon(make_icon(settings.behaviour.start_visible, ""))
+        self.tray = QSystemTrayIcon(make_icon(settings.behaviour.start_visible))
         self.tray.setToolTip(paths.APP_DISPLAY_NAME)
         self._build_menu()
         self.tray.show()
@@ -587,7 +586,7 @@ class CaptionsApp(QObject):
     def _pulse_tick(self, opacity: float) -> None:
         if not self._loading:
             return
-        self.tray.setIcon(make_icon(self.overlay.captions_visible(), "", float(opacity)))
+        self.tray.setIcon(make_icon(self.overlay.captions_visible(), float(opacity)))
 
     def _pulse_for(self, ms: int) -> None:
         """Blink the tray icon for a while: the only sign of a soft restart."""
@@ -777,14 +776,13 @@ class CaptionsApp(QObject):
         kind, text = self._status_kind()
         self._act_toggle.setText("Выключить субтитры" if visible else "Включить субтитры")
         # A dead pipeline forces the off icon: the tray must not claim captions that are
-        # not coming. The status text used to be computed and thrown away, so an error was
-        # invisible until the user opened the log.
+        # not coming. The status text itself stays out of the tray: no dot in the corner,
+        # no changing tooltip, the state lives in the log for whoever needs it.
         icon_on = visible and kind != "danger"
-        status = kind if kind in ("warn", "danger") else ""
-        state = (icon_on, status, text)
+        state = (icon_on, text)
         if not self._loading and state != self._icon_state:
             self._icon_state = state
-            self.tray.setIcon(make_icon(icon_on, status))
+            self.tray.setIcon(make_icon(icon_on))
 
     def shutdown(self) -> None:
         self._stopping = True

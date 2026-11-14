@@ -321,7 +321,7 @@ class SettingsDialog(QDialog):
         self.highlight_spin.valueChanged.connect(
             lambda value: self._set("highlight_seconds", float(value), "behaviour")
         )
-        grid.add_row("Держать слово ярким", self._field(self.highlight_spin, "с"), stretch=False)
+        grid.add_row("Подсветка активного текста", self._field(self.highlight_spin, "с"), stretch=False)
         self.idle_spin = self._spin(0, 600, behaviour.idle_clear_sec)
         self.idle_spin.valueChanged.connect(lambda value: self._set("idle_clear_sec", value, "behaviour"))
         grid.add_row("Задержка очистки субтитров при паузе", self._field(self.idle_spin, "с"), stretch=False)

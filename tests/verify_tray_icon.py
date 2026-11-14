@@ -40,8 +40,15 @@ def check(label: str, icon: QIcon) -> None:
 # 1. Normal path: the .ico files sit next to the module.
 check("иконка из файла (вкл)", icons.make_icon(True))
 check("иконка из файла (выкл)", icons.make_icon(False))
-check("иконка с прозрачностью", icons.make_icon(True, "", 0.5))
-check("иконка со статусом", icons.make_icon(True, "danger"))
+check("иконка с прозрачностью", icons.make_icon(True, 0.5))
+
+# 1a. No status dot: the icon is the .ico file and nothing else. A badge in the
+# corner of the tray icon was removed on request and must not come back.
+if hasattr(icons, "STATUS_COLORS"):
+    print(f"{'статусная точка не рисуется':<34} ВЕРНУЛАСЬ")
+    failures += 1
+else:
+    print(f"{'статусная точка не рисуется':<34} ок")
 
 # 2. Missing file: nothing is drawn in memory, the warning is logged instead.
 # The bundle must contain both files, so this path means a hand-deleted file.

@@ -7,7 +7,7 @@
 <p><b>Живые субтитры на русском в Windows. Локально, офлайн, без телеметрии, звук не покидает машину.</b></p>
 
 <p>
-  <a href="../../../releases/latest"><img src="https://img.shields.io/badge/%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C-1.0.0-2ea043?style=for-the-badge&logo=windows11&logoColor=white" alt="Скачать 1.0.0"></a>
+  <a href="../../../releases/latest"><img src="https://img.shields.io/badge/%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C-1.0.1-2ea043?style=for-the-badge&logo=windows11&logoColor=white" alt="Скачать 1.0.1"></a>
   <a href="https://pay.cloudtips.ru/p/318e1bac"><img src="https://img.shields.io/badge/%D0%9F%D0%BE%D0%B1%D0%BB%D0%B0%D0%B3%D0%BE%D0%B4%D0%B0%D1%80%D0%B8%D1%82%D1%8C-cloudtips-ff5e5b?style=for-the-badge&logo=buymeacoffee&logoColor=white" alt="Поблагодарить автора"></a>
 </p>
 
@@ -84,11 +84,11 @@
 
 В разделе [Releases](../../../releases) лежат два пакета:
 
-- `LiveCaptionsRU-1.0.0-setup.exe` - установщик. Права администратора не нужны, программа
+- `LiveCaptionsRU-1.0.1-setup.exe` - установщик. Права администратора не нужны, программа
   копируется в `%LOCALAPPDATA%\Programs\LiveCaptionsRU`, в меню "Пуск" появляется ярлык.
   Ярлык на рабочем столе и автозапуск включаются по желанию, оба пункта по умолчанию
   выключены. Интерфейс установщика на русском.
-- `LiveCaptionsRU-1.0.0-portable.zip` - установка не нужна: распакуйте в любую папку и
+- `LiveCaptionsRU-1.0.1-portable.zip` - установка не нужна: распакуйте в любую папку и
   запустите `LiveCaptionsRU.exe` оттуда. Файлы папки должны лежать вместе, в `_internal`
   находятся рантайм и модель распознавания.
 
@@ -104,7 +104,7 @@ Windows защитила ваш компьютер". Нажмите **Подро
 случае**. Метку "скачано из интернета" можно снять еще до запуска:
 
 ```powershell
-Unblock-File .\LiveCaptionsRU-1.0.0-setup.exe
+Unblock-File .\LiveCaptionsRU-1.0.1-setup.exe
 ```
 
 **Smart App Control** в Windows 11 строже: он по умолчанию блокирует незнакомый и
@@ -123,10 +123,10 @@ Unblock-File .\LiveCaptionsRU-1.0.0-setup.exe
 В релизе лежит `SHA256SUMS.txt` с суммой каждого файла. Проверьте скачанное до запуска:
 
 ```powershell
-Get-FileHash .\LiveCaptionsRU-1.0.0-setup.exe -Algorithm SHA256
+Get-FileHash .\LiveCaptionsRU-1.0.1-setup.exe -Algorithm SHA256
 ```
 
-или через `certutil -hashfile LiveCaptionsRU-1.0.0-setup.exe SHA256`. Вывод должен
+или через `certutil -hashfile LiveCaptionsRU-1.0.1-setup.exe SHA256`. Вывод должен
 совпасть со строкой в `SHA256SUMS.txt` символ в символ. Файл с суммами лежит рядом с
 бинарниками, поэтому он подтверждает, что скачивание прошло без повреждений, а не
 подлинность релиза: без сертификата подписи кода доказывать авторство бинарников нечем.
@@ -190,7 +190,7 @@ Get-FileHash .\LiveCaptionsRU-1.0.0-setup.exe -Algorithm SHA256
 
 ## Безопасность
 
-- Текущая версия 1.0.0. Исправления получает только последний релиз.
+- Текущая версия 1.0.1. Исправления получает только последний релиз.
 - Об уязвимости сообщайте по закрытому каналу из
   [SECURITY.md](../.github/SECURITY.md), а не в публичной задаче.
 - Файлы модели и файлы релиза покрыты контрольными суммами SHA-256;
@@ -312,7 +312,7 @@ licenses/           тексты лицензий третьих сторон
 `SetWindowDisplayAffinity`: плашка сделана только для ваших глаз. Нужна Windows 10 версии
 2004 или новее.
 
-**Можно скопировать распознанный текст?** В 1.0.0 нельзя. Текст рисуется в плашке и не
+**Можно скопировать распознанный текст?** В 1.0.1 нельзя. Текст рисуется в плашке и не
 сохраняется, копировать после него нечего.
 
 **Можно подключить свою модель?** Да. Положите другой экспорт в `models\t-one` рядом с

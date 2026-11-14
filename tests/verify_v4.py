@@ -60,7 +60,7 @@ def check_dialog(app) -> bool:
         app.processEvents()
         time.sleep(0.02)
 
-    print("\n=== Окно настроек версии 1.0.0 ===")
+    print("\n=== Окно настроек версии 1.0.1 ===")
     nav = dialog.findChild(QListWidget)
     titles = [nav.item(index).text() for index in range(nav.count())]
     print(f"  разделы: {titles}")
