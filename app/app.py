@@ -15,6 +15,7 @@ from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QApplication, QMenu, QMessageBox, QSystemTrayIcon
 
 import paths
+import i18n
 from asr import TOneStreamingASR
 from capture import LoopbackCapture
 from config import (
@@ -646,7 +647,12 @@ class CaptionsApp(QObject):
             "model_load_retry_scheduled attempt=%d delay_s=%.0f", self._load_attempts, delay_ms / 1000.0
         )
         if self._load_attempts == 1:
-            QMessageBox.critical(None, paths.APP_DISPLAY_NAME, f"Не удалось загрузить модель:\n{message}")
+            i18n.show_message(
+                None,
+                QMessageBox.Icon.Critical,
+                paths.APP_DISPLAY_NAME,
+                f"Не удалось загрузить модель:\n{message}",
+            )
         else:
             self._notify("Модель не загрузилась", f"Повторю попытку через {int(delay_ms / 1000)} с.")
         QTimer.singleShot(delay_ms, self._retry_load_model)

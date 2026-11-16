@@ -3,7 +3,7 @@
 ; Then compile this file with Inno Setup 6 (iscc installer\LiveCaptionsRU.iss).
 
 #define AppName "Live Captions RU"
-#define AppVersion "1.0.1"
+#define AppVersion "1.0.2"
 #define AppExe "LiveCaptionsRU.exe"
 
 [Setup]

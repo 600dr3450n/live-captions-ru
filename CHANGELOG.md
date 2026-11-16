@@ -4,6 +4,21 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-11-16
+
+### Fixed
+
+- Buttons in the app's own dialogs are Russian again. Qt keeps the captions of its
+  standard buttons ("OK", "Yes", "No", "Cancel") in a translation file that was never
+  loaded, so the reset confirmation offered English "Yes" and "No" in an otherwise
+  Russian interface. The app now loads Qt's Russian translation and builds every message
+  box with explicit Russian buttons, so a missing translation file in a future bundle
+  cannot bring the English captions back.
+- The reset confirmation asks with "ОК" and "Отмена" instead of Qt's "Yes" and "No", and
+  cancelling it leaves every setting untouched.
+
+[1.0.2]: https://github.com/600dr3450n/live-captions-ru/releases/tag/v1.0.2
+
 ## [1.0.1] - 2026-11-14
 
 ### Fixed

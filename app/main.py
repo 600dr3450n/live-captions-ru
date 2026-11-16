@@ -10,9 +10,9 @@ _APP_DIR = os.path.dirname(os.path.abspath(__file__))
 if _APP_DIR not in sys.path:
     sys.path.insert(0, _APP_DIR)
 
-from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
+import i18n
 import paths
 from app import CaptionsApp
 from config import TAKEOVER_ARG, TAKEOVER_WAIT_SECONDS
@@ -66,6 +66,7 @@ def main() -> int:
     if running:
         log.info("instance_check result=already_running action=exit")
         app = QApplication(sys.argv)
+        i18n.install_ui_translation(app)
         message = "Программа уже запущена — ищите значок в трее."
         if takeover:
             log.error("relaunch_takeover_timeout wait_s=%.0f action=exit", TAKEOVER_WAIT_SECONDS)
@@ -74,17 +75,19 @@ def main() -> int:
                 f"{TAKEOVER_WAIT_SECONDS:.0f} с. Закройте программу через значок в трее "
                 "и запустите снова."
             )
-        box = QMessageBox(
+        i18n.show_message(
+            None,
             QMessageBox.Icon.Information,
             paths.APP_DISPLAY_NAME,
             message,
+            topmost=True,
         )
-        # A plain information box can open behind maximised windows and look like nothing happened.
-        box.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
-        box.exec()
         return 0
 
     app = QApplication(sys.argv)
+    # Qt's own captions (OK, Cancel, Yes, No) are English until its Russian
+    # translation is loaded; the whole interface of the app is Russian.
+    i18n.install_ui_translation(app)
     app.setQuitOnLastWindowClosed(False)
     app.setApplicationName(paths.APP_DISPLAY_NAME)
     apply_ui_theme(app)
@@ -96,7 +99,7 @@ def main() -> int:
     except FileNotFoundError as exc:
         log.error("model_missing error=%r", exc)
         if not takeover:
-            QMessageBox.critical(None, paths.APP_DISPLAY_NAME, str(exc))
+            i18n.show_message(None, QMessageBox.Icon.Critical, paths.APP_DISPLAY_NAME, str(exc))
         return 2
 
     captions = CaptionsApp(app, settings)
@@ -107,7 +110,12 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         log.error("startup_failed error=%r", exc)
         if not takeover:
-            QMessageBox.critical(None, paths.APP_DISPLAY_NAME, f"Не удалось запустить распознавание:\n{exc}")
+            i18n.show_message(
+                None,
+                QMessageBox.Icon.Critical,
+                paths.APP_DISPLAY_NAME,
+                f"Не удалось запустить распознавание:\n{exc}",
+            )
         return 3
 
     log.debug("app_ready")

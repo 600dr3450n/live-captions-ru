@@ -28,6 +28,7 @@ from PySide6.QtWidgets import (
 )
 
 import paths
+import i18n
 from settings import Settings
 from presets import STYLES, apply_style
 from style_tile import StyleCard
@@ -621,8 +622,9 @@ class SettingsDialog(QDialog):
         log_path = paths.app_data_dir() / "app.log"
         if not log_path.exists():
             log.warning("open_log_skipped reason=missing path=%s", log_path)
-            QMessageBox.information(
+            i18n.show_message(
                 self,
+                QMessageBox.Icon.Information,
                 "Журнал событий",
                 "Журнал пока пуст: он появится после первого запуска распознавания.",
             )
@@ -633,8 +635,9 @@ class SettingsDialog(QDialog):
             os.startfile(str(log_path))  # noqa: S606
         except OSError as exc:
             log.error("open_log_failed path=%s error=%r", log_path, exc)
-            QMessageBox.warning(
+            i18n.show_message(
                 self,
+                QMessageBox.Icon.Warning,
                 "Журнал событий",
                 f"Не удалось открыть журнал:\n{log_path}\n\n{exc}",
             )
@@ -643,14 +646,9 @@ class SettingsDialog(QDialog):
         from settings import Settings
 
         # A single click used to throw away every setting, including the chosen device.
-        answer = QMessageBox.question(
-            self,
-            "Сброс настроек",
-            "Вернуть все настройки к значениям по умолчанию?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No,
-        )
-        if answer != QMessageBox.StandardButton.Yes:
+        # The buttons were Qt's Yes/No, and Qt's own translation is not loaded in the
+        # app, so a Russian dialog offered English captions.
+        if not i18n.ask(self, "Сброс настроек", "Вернуть все настройки к значениям по умолчанию?"):
             log.info("settings_reset_cancelled")
             return
         defaults = Settings()

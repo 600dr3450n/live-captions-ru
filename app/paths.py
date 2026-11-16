@@ -11,7 +11,7 @@ from pathlib import Path
 
 APP_DIR_NAME = "LiveCaptionsRU"
 APP_DISPLAY_NAME = "Live Captions RU"
-APP_VERSION = "1.0.1"
+APP_VERSION = "1.0.2"
 
 log = logging.getLogger(__name__)
 
