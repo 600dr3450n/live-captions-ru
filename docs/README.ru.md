@@ -20,7 +20,7 @@
 
 <p><a href="../README.md">English</a> | Русский</p>
 
-<img src="images/screenshot.png" width="820" alt="Плашка субтитров внизу экрана и окно настроек">
+<img src="images/screenshot.png" width="1000" alt="Окно настроек и плашка живых субтитров">
 
 </div>
 

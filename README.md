@@ -20,7 +20,7 @@
 
 <p>English | <a href="docs/README.ru.md">Русский</a></p>
 
-<img src="docs/images/screenshot.png" width="820" alt="Subtitle box at the bottom of the screen and the settings window">
+<img src="docs/images/screenshot.png" width="1000" alt="Settings window and the caption box with live subtitles">
 
 </div>
 
