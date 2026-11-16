@@ -24,8 +24,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 ### Fixed
 
 - The settings label for the word highlight duration is back to "Подсветка активного
-  текста". It had been renamed without a request, and the new wording described the
-  mechanism instead of the setting.
+  текста". The 1.0.0 wording described the mechanism instead of the setting.
 - The tray icon no longer carries a status dot in its lower right corner. The yellow and
   red badges appeared on their own while the app was running and read as a defect. The
   tray now has exactly two looks, captions on and captions off, and the tooltip stays
